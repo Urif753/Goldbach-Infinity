@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: goldbach-infinity
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --workers 1 --threads 4 --timeout 120
+    disk:
+      name: goldbach-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.4
+      - key: BLOCK_SIZE
+        value: 200000
+      - key: PAUSE_SECONDS
+        value: 0.05
+      - key: DB_PATH
+        value: /var/data/goldbach.db
